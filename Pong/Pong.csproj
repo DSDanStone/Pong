@@ -45,6 +45,7 @@
     <Compile Include="Classes\Ball.cs" />
     <Compile Include="Classes\Board.cs" />
     <Compile Include="Classes\Paddle.cs" />
+    <Compile Include="Classes\PongGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,6 +10,10 @@ namespace Pong.Classes
 	{
 		public int Width { get; }
 		public int Height { get; }
+		private const int MinWidth = 37;
+		private const int MaxWidth = 150;
+		private const int MinHeight = 10;
+		private const int MaxHeight = 30;
 
 		public Board()
 		{
@@ -19,31 +23,22 @@ namespace Pong.Classes
 
 		public Board(int width, int height)
 		{
-			this.Width = width;
-			this.Height = height;
+			this.Width = (width < MinWidth) ? (width < MaxWidth) ? width : MaxWidth : MinWidth;
+			this.Height = (height < MinHeight) ? (height < MaxHeight) ? height : MaxHeight : MinHeight;
 		}
 
-		public void PrintBoard(Ball ball, Paddle player1, Paddle player2)
+		public void PrintBoard()
 		{
 			List<string> boardLayout = new List<string>();
 			for (int i = -1; i < this.Height + 1; i++)
 			{
-				string line = "+";
+				string line = "  +";
 				// Populates a line
 				for (int j = -1; j < this.Width + 1; j++)
 				{
 					if (i == -1 || i == this.Height)
 					{
 						line += "+";
-					}
-					else if (i == ball.YPosition && j == ball.XPosition)
-					{
-						line += "0";
-					}
-					else if (((i == player1.Position || i == player1.Position + 1) && j == 0) ||
-							((i == player2.Position || i == player2.Position + 1) && j == this.Width))
-					{
-						line += "|";
 					}
 					else
 					{

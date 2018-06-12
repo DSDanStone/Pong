@@ -13,28 +13,12 @@ namespace Pong.Classes
 		public bool GoingUp { get; private set; }
 		public bool GoingRight { get; private set; }
 
-		public Ball()
-		{
-			XPosition = 3;
-			YPosition = 3;
-			GoingUp = true;
-			GoingRight = true;
-		}
+		private char blankSpace = ' ';
+		private char ballChar = '0';
 
-		public Ball(int startingX, int startingY)
+		public Ball(Board board)
 		{
-			XPosition = startingX;
-			YPosition = startingY;
-			GoingUp = true;
-			GoingRight = true;
-		}
-
-		public Ball(int startingX, int startingY, bool goingUp, bool goingRight)
-		{
-			XPosition = startingX;
-			YPosition = startingY;
-			GoingUp = goingUp;
-			GoingRight = goingRight;
+			ResetBall(true, board);
 		}
 
 		/// <summary>
@@ -47,10 +31,12 @@ namespace Pong.Classes
 		public bool Move(Board board, Paddle player1, Paddle player2)
 		{
 			bool gameOver = false;
+
+			this.EraseBall();
+
 			if (GoingRight)
 			{
-
-				if (this.XPosition == board.Width - 2)
+				if (this.XPosition == player2.Column - 1)
 				{
 					if (this.YPosition == player2.Position || this.YPosition == player2.Position + 1)
 					{
@@ -70,7 +56,7 @@ namespace Pong.Classes
 			}
 			else
 			{
-				if (this.XPosition == 1)
+				if (this.XPosition == player1.Column + 1)
 				{
 					if (this.YPosition == player1.Position || this.YPosition == player1.Position + 1)
 					{
@@ -88,11 +74,9 @@ namespace Pong.Classes
 					this.XPosition--;
 				}
 			}
-
-
 			if (GoingUp)
 			{
-				if (this.YPosition == 0)
+				if (this.YPosition == 1)
 				{
 					this.GoingUp = false;
 					this.YPosition++;
@@ -104,7 +88,7 @@ namespace Pong.Classes
 			}
 			else
 			{
-				if (this.YPosition == board.Height-1)
+				if (this.YPosition == board.Height)
 				{
 					this.GoingUp = true;
 					this.YPosition--;
@@ -115,8 +99,44 @@ namespace Pong.Classes
 				}
 			}
 
+			this.PrintBall();
 
 			return !gameOver;
+		}
+
+		public void EraseBall()
+		{
+			Console.SetCursorPosition(this.XPosition, this.YPosition);
+			Console.Write(blankSpace);
+			Console.SetCursorPosition(this.XPosition, this.YPosition);
+			Console.Write(blankSpace);
+		}
+
+		public void PrintBall()
+		{
+			Console.SetCursorPosition(this.XPosition, this.YPosition);
+			Console.Write(ballChar);
+			Console.SetCursorPosition(this.XPosition, this.YPosition);
+			Console.Write(ballChar);
+		}
+
+		public void ResetBall(bool startAtLeft, Board board)
+		{
+			Random random = new Random();
+			if (startAtLeft)
+			{
+				this.XPosition = 3;
+				this.YPosition = random.Next(1, board.Height);
+				this.GoingRight = true;
+				this.GoingUp = true;
+			}
+			else
+			{
+				this.XPosition = board.Width - 3;
+				this.YPosition = random.Next(1, board.Height);
+				this.GoingRight = false;
+				this.GoingUp = true;
+			}
 		}
 	}
 }
